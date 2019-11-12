@@ -6,27 +6,27 @@
 
 struct client {
     client(vector<uint8_t> Ki, vector<uint8_t> random) : authorization(move(Ki), move(random)),
-                                                         communication(authorization.get_Ks()) {}
+                                                         communic(authorization.get_Ks()) {}
 
     vector<uint8_t> get_SRES() {
         return authorization.get_SRES();
     }
 
     uint8_t send_byte(uint8_t m) {
-        return communication.send_byte(m);
+        return communic.send_byte(m);
     }
 
     uint8_t receive_byte(uint8_t m) {
-        return communication.receive_byte(m);
+        return communic.receive_byte(m);
     }
 
 private:
     client_authorization authorization;
-    communication communication;
+    communication communic;
 };
 
 struct base_station {
-    explicit base_station(vector<uint8_t> Ki) : authorization(move(Ki)), communication(authorization.get_Ks()) {}
+    explicit base_station(vector<uint8_t> Ki) : authorization(move(Ki)), communic(authorization.get_Ks()) {}
 
     vector<uint8_t> get_SRES() {
         return authorization.get_SRES();
@@ -37,16 +37,16 @@ struct base_station {
     }
 
     uint8_t send_byte(uint8_t m) {
-        return communication.send_byte(m);
+        return communic.send_byte(m);
     }
 
     uint8_t receive_byte(uint8_t m) {
-        return communication.receive_byte(m);
+        return communic.receive_byte(m);
     }
 
 private:
     station_authorization authorization;
-    communication communication;
+    communication communic;
 };
 
 #endif //COMP_128_USERS_H
