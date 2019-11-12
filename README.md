@@ -1,0 +1,1 @@
+A C++ project for authorization and stream cipher by @entershei and @polinb
