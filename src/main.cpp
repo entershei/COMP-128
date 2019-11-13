@@ -9,7 +9,7 @@ struct my_random {
     my_random() : mt(rd()), distribution(0, 255) {}
 
     uint8_t get_random() {
-        distribution(mt);
+        return distribution(mt);
     }
 
 private:

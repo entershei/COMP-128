@@ -1,5 +1,4 @@
-#ifndef COMP_128_COMMUNICATION_H
-#define COMP_128_COMMUNICATION_H
+#pragma once
 
 #include <vector>
 
@@ -55,15 +54,24 @@ private:
         vector<uint8_t> res;
         for (auto &v : vec) {
             for (int i = 7; i >= 0; --i) {
-                res.emplace_back(v & (1 << i));
+                if (v & (1 << i)) {
+                    res.emplace_back(1);
+                } else {
+                    res.emplace_back(0);
+                }
             }
         }
+        return res;
     }
 
     vector<uint8_t> uint_to_bit_stream(size_t num, size_t size) const {
         vector<uint8_t> res(size, false);
         for (size_t i = 0; i < size; ++i) {
-            res[i] = (num & (1 << i));
+            if ((num & (1 << i))) {
+                res[i] = 1;
+            } else {
+                res[i] = 0;
+            }
         }
         return res;
     }
@@ -87,18 +95,12 @@ private:
             reg1[0] = reg1[0] ^ Kc[i];
             reg2[0] = reg2[0] ^ Kc[i];
             reg3[0] = reg3[0] ^ Kc[i];
-//            if (Kc[i] != 0 || reg1[0] != 0 || reg2[0] != 0 || reg3[0] != 0) {
-//                cerr << "!!!!" << endl;
-//            }
         }
         for (int i = 0; i < 22; i++) {
             shift_all(reg1, reg2, reg3);
             reg1[0] = reg1[0] ^ frame_stream[i];
             reg2[0] = reg2[0] ^ frame_stream[i];
             reg3[0] = reg3[0] ^ frame_stream[i];
-//            if (Kc[i] != 0 || reg1[0] != 0 || reg2[0] != 0 || reg3[0] != 0) {
-//                cerr << "!!!!" << endl;
-//            }
         }
         for (int i = 0; i < 100; i++) {
             shift_majority(reg1, reg2, reg3);
@@ -164,5 +166,3 @@ private:
         return reg;
     }
 };
-
-#endif //COMP_128_COMMUNICATION_H
