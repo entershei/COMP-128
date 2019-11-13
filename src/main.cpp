@@ -57,7 +57,7 @@ int main() {
     unsigned char m;
     while (cin >> m) {
         uint8_t encrypted_m = client.send_byte(m);
-        uint8_t decrepted_m = station.receive_byte(encrypted_m);
+        uint8_t decrypted_m = station.receive_byte(encrypted_m);
 
         uint8_t station_message = my_rand.get_random();
         uint8_t encrypted_station_m = station.send_byte(station_message);
@@ -68,21 +68,32 @@ int main() {
         cout << endl << "Sending message from Client to Station..." << endl;
 
         cout << endl << "  Client sent message   |  Station received message  |  Station decrypted message  |" << endl
-            << "       " << print_char_as_bits(m) << "         |"
-            << "          " << print_char_as_bits(encrypted_m) << "          |"
-            << "          " << print_char_as_bits(decrepted_m) << "           |" << endl;
+             << "       " << print_char_as_bits(m) << "         |"
+             << "          " << print_char_as_bits(encrypted_m) << "          |"
+             << "          " << print_char_as_bits(decrypted_m) << "           |" << endl;
+
+        if (m != decrypted_m) {
+            cout << endl << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! FAILED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+                 << endl;
+        }
 
         cout << endl
-            << "Sending message from Station to Client..."
-            << endl << endl;
+             << "Sending message from Station to Client..."
+             << endl << endl;
 
         cout << "  Station sent message  |  Client received message   |  Client decrypted message   |" << endl
-            << "        " << print_char_as_bits(station_message) << "        |"
-            << "         " << print_char_as_bits(encrypted_station_m) << "           |"
-            << "          " << print_char_as_bits(decrypted_station_m) << "           |"
-            << endl << endl
-            << "===================================================================================="
-            << endl << endl << endl;
+             << "        " << print_char_as_bits(station_message) << "        |"
+             << "         " << print_char_as_bits(encrypted_station_m) << "           |"
+             << "          " << print_char_as_bits(decrypted_station_m) << "           |";
+
+        if (station_message != decrypted_station_m) {
+            cout << endl << endl
+                 << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! FAILED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
+        }
+
+        cout << endl << endl
+             << "===================================================================================="
+             << endl << endl << endl;
     }
 
     return 0;
